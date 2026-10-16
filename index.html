@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important} body{margin:0}</style>
+</head>
+<body>
+<title>Mar da Madeira</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: kiosk screen in three bands — controls | living food web | what changed. Stacks on phones. Deliberately single dark "deep water" look. */
+:root {
+  --abyss: #061820;
+  --deep: #0b2733;
+  --panel: #0f3242;
+  --line: #1d4a5c;
+  --fg: #e9f2f1;
+  --muted: #93b3b9;
+  --sand: #f0c35a;
+  --up: #5fd6a8;
+  --down: #ff806f;
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  background: radial-gradient(120% 90% at 50% 0%, #0e3443 0%, var(--abyss) 60%) fixed, var(--abyss);
+  color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.4;
+}
+.wrap {
+  min-height: 100%; display: flex; flex-direction: column; gap: 14px;
+  padding-block: 18px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  max-width: 1680px; margin: 0 auto; box-sizing: border-box;
+}
+header { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.eyebrow { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--sand); font-weight: 700; }
+h1 { font-family: var(--display); font-weight: 700; font-size: clamp(28px, 3.4vw, 52px); line-height: 1; margin: 4px 0 0; text-wrap: balance; letter-spacing: -.01em; }
+.lede { color: var(--muted); margin: 6px 0 0; max-width: 60ch; }
+.head-actions { display: flex; gap: 8px; align-items: center; }
+button { font: inherit; color: inherit; cursor: pointer; }
+.chip {
+  border: 1px solid var(--line); background: var(--deep); border-radius: 999px; padding: 10px 16px; min-height: 44px;
+  font-weight: 700; font-size: 15px; transition: background .15s, border-color .15s;
+}
+.chip:hover { border-color: var(--muted); }
+.chip[aria-pressed="true"] { background: var(--sand); color: var(--abyss); border-color: var(--sand); }
+.chip:focus-visible, input[type=range]:focus-visible { outline: 3px solid var(--sand); outline-offset: 2px; }
+
+main { display: grid; grid-template-columns: minmax(260px, 330px) minmax(0, 1fr) minmax(280px, 360px); gap: 14px; flex: 1; min-height: 0; }
+.panel { background: color-mix(in srgb, var(--panel) 82%, transparent); border: 1px solid var(--line); border-radius: 16px; padding: 16px; min-width: 0; }
+.panel h2 { font-family: var(--display); font-weight: 500; font-size: 20px; margin: 0 0 4px; }
+.hint { color: var(--muted); font-size: 14px; margin: 0 0 12px; }
+
+.presets { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.presets .chip { padding: 8px 10px; }
+.ctrl { padding: 8px 0 4px; border-top: 1px solid var(--line); }
+.ctrl-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.ctrl label { font-weight: 700; font-size: 16px; }
+.ctrl .sub { color: var(--muted); font-size: 13px; }
+.val { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--sand); white-space: nowrap; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 40px; background: transparent; margin: 0; }
+input[type=range]::-webkit-slider-runnable-track { height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--sand) var(--p, 33%), var(--line) var(--p, 33%)); }
+input[type=range]::-moz-range-track { height: 8px; border-radius: 8px; background: linear-gradient(90deg, var(--sand) var(--p, 33%), var(--line) var(--p, 33%)); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 32px; height: 32px; border-radius: 50%; background: var(--fg); border: 4px solid var(--sand); margin-top: -12px; box-shadow: 0 2px 8px rgba(0,0,0,.4); }
+input[type=range]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: var(--fg); border: 4px solid var(--sand); }
+.scale { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: -4px; }
+
+.web { display: flex; flex-direction: column; gap: 10px; padding: 14px 14px 10px; }
+.clock { display: flex; align-items: center; gap: 14px; }
+.year { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 2.6vw, 40px); font-variant-numeric: tabular-nums; min-width: 6.5ch; }
+.year small { font-size: .45em; font-weight: 500; color: var(--muted); display: block; letter-spacing: .08em; text-transform: uppercase; }
+.bar { flex: 1; height: 6px; background: var(--line); border-radius: 6px; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--sand); }
+.svgbox { flex: 1; min-height: 320px; position: relative; }
+svg.food { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.tl-label { fill: var(--muted); font-size: 12px; font-family: var(--body); }
+.tl-line { stroke: var(--line); stroke-dasharray: 3 5; }
+.link { fill: none; stroke: var(--muted); stroke-linecap: round; }
+.node { cursor: pointer; outline: none; }
+.node:focus-visible circle.body { stroke: var(--sand); stroke-width: 4; }
+.node circle.body { stroke-width: 3; }
+.node text { fill: var(--fg); font-size: 13px; font-family: var(--body); font-weight: 700; paint-order: stroke; stroke: var(--abyss); stroke-width: 4px; stroke-linejoin: round; text-anchor: middle; }
+.node text.pct { font-size: 13px; font-weight: 700; }
+.node.sel circle.halo { stroke: var(--sand); stroke-width: 3; fill: none; }
+.legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 13px; color: var(--muted); }
+.legend span::before { content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; background: var(--c); }
+
+.side { display: flex; flex-direction: column; gap: 14px; }
+.story { font-size: 17px; line-height: 1.45; margin: 0; min-height: 3.2em; }
+.story b.up { color: var(--up); } .story b.down { color: var(--down); }
+.tile { display: grid; grid-template-columns: 1fr auto; align-items: baseline; gap: 2px 10px; padding: 12px 14px; border-radius: 12px; background: var(--deep); border: 1px solid var(--line); margin-top: 12px; }
+.tile .k { color: var(--muted); font-size: 13px; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+.tile .v { font-family: var(--display); font-size: 30px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.tile .d { font-variant-numeric: tabular-nums; font-weight: 700; }
+.ind { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ind li button { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 42% 5ch; align-items: center; gap: 10px; padding: 4px 6px; border: 0; border-radius: 10px; background: transparent; text-align: left; min-height: 44px; }
+.ind li button:hover, .ind li button[aria-current="true"] { background: var(--deep); }
+.ind .nm { font-weight: 700; font-size: 15px; min-width: 0; }
+.ind .track { position: relative; height: 12px; background: var(--deep); border-radius: 6px; }
+.ind .track::after { content: ""; position: absolute; left: 50%; top: -3px; bottom: -3px; width: 2px; background: var(--muted); opacity: .6; }
+.ind .fill { position: absolute; top: 0; bottom: 0; border-radius: 6px; }
+.ind .pc { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; font-size: 14px; }
+.detail h3 { font-family: var(--display); font-size: 20px; font-weight: 500; margin: 0; }
+.detail p { color: var(--muted); margin: 4px 0 8px; font-size: 14px; }
+svg.spark { width: 100%; height: 110px; display: block; }
+.spark .ax { fill: var(--muted); font-size: 11px; font-family: var(--body); }
+footer { color: var(--muted); font-size: 12px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.badge { color: var(--abyss); background: var(--sand); border-radius: 4px; padding: 1px 6px; font-weight: 700; margin-right: 6px; }
+
+@media (min-width: 1181px) and (min-height: 860px) {
+  .wrap { height: 100%; }
+  main { min-height: 0; }
+  main > .panel, .side { overflow: auto; }
+  .side .panel { padding: 12px 16px; }
+  .tile { margin-top: 8px; padding: 8px 12px; }
+  .tile .v { font-size: 26px; }
+  .hint { margin-bottom: 8px; }
+}
+@media (max-width: 1180px) {
+  main { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .web { grid-column: 1 / -1; order: -1; }
+  .svgbox { min-height: 0; aspect-ratio: 1070 / 610; flex: none; }
+}
+@media (max-width: 720px) {
+  main { grid-template-columns: minmax(0, 1fr); }
+  .node text { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow" data-t="eyebrow"></div>
+      <h1 data-t="title"></h1>
+      <p class="lede" data-t="lede"></p>
+    </div>
+    <div class="head-actions">
+      <button class="chip" id="lang-pt" aria-pressed="true">PT</button>
+      <button class="chip" id="lang-en" aria-pressed="false">EN</button>
+      <button class="chip" id="reset" data-t="reset"></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" aria-labelledby="ctrl-h">
+      <h2 id="ctrl-h" data-t="ctrlTitle"></h2>
+      <p class="hint" data-t="ctrlHint"></p>
+      <div class="presets" id="presets"></div>
+      <div id="controls"></div>
+    </section>
+
+    <section class="panel web" aria-labelledby="web-h">
+      <h2 id="web-h" class="sr" hidden data-t="webTitle"></h2>
+      <div class="clock">
+        <div class="year" id="year"></div>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
+      <div class="svgbox"><svg class="food" id="food" viewBox="0 0 1070 610" role="img"></svg></div>
+      <div class="legend" id="legend"></div>
+    </section>
+
+    <section class="side">
+      <div class="panel">
+        <h2 data-t="whatTitle"></h2>
+        <p class="story" id="story" aria-live="polite"></p>
+        <div class="tile">
+          <span class="k" data-t="catchK"></span><span class="d" id="catchD"></span>
+          <span class="v" id="catchV"></span><span></span>
+        </div>
+      </div>
+      <div class="panel">
+        <h2 data-t="indTitle"></h2>
+        <ul class="ind" id="ind"></ul>
+      </div>
+      <div class="panel detail" id="detail">
+        <h3 id="detName"></h3>
+        <p id="detText"></p>
+        <svg class="spark" id="spark" viewBox="0 0 320 120" role="img"></svg>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span><span class="badge" data-t="proto"></span><span data-t="foot"></span></span>
+    <span data-t="foot2"></span>
+  </footer>
+</div>
+
+<script>
+const MODEL = {"names":["Baleen whales","Deep diving whales","Dolphins","Sea turtles","Seabirds","Monk seals","Aphanopus carbo","Bathypelagic Fish","Mesopelagic M","Mesopelagic S","Deep Bathydem Sharks","Shallow Bathydem Sharks","Deep Bathydem Fish","Shallow Bathydem Fish","Pelagic Top Pred","Thunnus obesus","Pelagic L","Pelagic M","Trachurus picturatus","Pelagic Planktivores","BP Piscivores","BP MesoCvores","BP MicroCvores","Dem Predators","Dem MesoCvores","Dem MicroCvores","Reef Morays","SF Piscivores","SF MesoCvores","SF MicroCvores","SF Omnivorous","SF Planktivorous","Oceanic Cephs","Coastal Cephs","Oceanic Decapods","Coastal Decapods","Other bentos","Benthic grazers","MacroAlgae","Zooplankton","Phytoplankton","Detritus"],"TL":[3.61,4.41,4.02,3.11,3.78,4.92,4.3,4.03,3.38,2.85,4.26,4.5,3.98,3.81,4.51,3.87,3.84,3.52,2.99,2.73,3.93,3.9,3.16,4.13,3.71,3.08,3.83,3.85,3.35,3.08,2.15,3.11,3.54,4.03,2.63,2.27,2.31,2.08,1.0,2.0,1.0,1.0],"B":[0.046,0.024,0.028,0.001,0.001,0.001,0.782,0.071,0.21,2.026,0.192,0.053,0.089,0.515,0.003,0.308,0.164,0.138,1.893,2.545,0.641,0.573,0.254,0.227,0.485,0.969,0.222,0.86,0.742,0.641,0.254,0.693,2.074,0.242,2.196,4.036,3.371,1.514,2.673,5.198,8.72,1.0],"PB":[0.03,0.02,0.07,0.05,0.15,0.05,0.125,0.68,0.67,2.714,0.157,0.252,0.365,0.633,0.315,0.318,0.371,0.939,0.757,2.314,0.681,0.751,1.481,0.29,1.249,1.42,0.42,0.61,1.161,1.195,1.745,2.375,2.33,3.0,2.77,2.0,3.0,1.83,3.5,15.99,125.0,0],"QB":[5.56,10.27,11.41,2.54,69.0,13.15,3.117,3.547,4.593,9.154,2.11,2.895,3.507,3.904,3.424,4.89,4.506,8.037,7.581,7.712,3.407,3.757,5.256,3.396,4.995,7.1,3.715,4.356,5.805,6.164,10.156,9.46,7.0,8.1,9.67,10.0,10.0,7.32,0.0,58.79,0.0,0.0],"EE":[0.0,0.0,0.0,0.0,0.0,0.0,0.9499632,0.9446137,0.9932476,0.9991972,0.9490446,0.9481402,0.9530238,0.9503135,0.9191323,0.9501856,0.9501444,0.947625,0.9889445,0.9900538,0.9493991,0.9504798,0.9512132,0.9541684,0.9493968,0.9499117,0.9506913,0.9495192,0.9501699,0.948826,0.94755,0.948932,0.9500661,0.9540266,0.9497107,0.9900106,0.9499027,0.9500813,0.7001577,0.9902009,0.2309602,0],"imp":[0.41,0.211,0.01,0.47,0.15,0.1,0,0.004,0.1,0,0,0,0,0,0,0.45,0.024,0.055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0.12,0,0,0,0,0,0,0,0,0],"fleets":["FPO","HAND","LHP","LLD","LLS","MISC","PS","REC"],"U":0.2,"diet":[[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.03,0.02,0.007,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.1,0.0,0.0,0.0,0.0,0.0,0.069,0.05,0.0,0.08,0.0,0.0,0.0,0.009,0.0,0.023,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.015,0.134,0.054,0.05,0.18,0.0,0.05,0.263,0.136,0.0,0.3,0.111,0.0,0.12,0.0,0.07,0.082,0.0625,0.03,0.0,0.04,0.068,0.0,0.0,0.049,0.0,0.0,0.006,0.0,0.0,0.0,0.0,0.254,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.003,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.044,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.094,0.0,0.0,0.0,0.161,0.05,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.015,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.035,0.0,0.04,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.031,0.0,0.0,0.0,0.0,0.0,0.0,0.04,0.01,0.015,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.03,0.0,0.0,0.0,0.0,0.0,0.0,0.013,0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.04,0.065,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.08,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.06,0.0,0.0,0.0,0.0,0.16,0.05,0.073,0.0,0.0,0.159,0.0,0.0,0.009,0.047,0.0,0.0,0.113,0.0,0.0,0.0,0.0,0.0,0.0375,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.412,0.0,0.0,0.0,0.44,0.0,0.0,0.0,0.0,0.0,0.0,0.06,0.0,0.0,0.119,0.15,0.236,0.32,0.09,0.0,0.264,0.0,0.0,0.031,0.183,0.0,0.0,0.082,0.07,0.0,0.0,0.0,0.1,0.25,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.07,0.0,0.012,0.0,0.0,0.0,0.0,0.141,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.105,0.0,0.064,0.0,0.0,0.0,0.0,0.0,0.0,0.025,0.035,0.0,0.0,0.0,0.0,0.0,0.015,0.0,0.0,0.0,0.0,0.0,0.039,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.119,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.1,0.0,0.0,0.1,0.0,0.0,0.0,0.0,0.0,0.163,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.01,0.0,0.0,0.0,0.0,0.077,0.0,0.21,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.06,0.0,0.0,0.129,0.041,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.075,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.06,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.11,0.0,0.0,0.0,0.0,0.0,0.0,0.061,0.0,0.0,0.1,0.067,0.0,0.0,0.091,0.057,0.0,0.0,0.0,0.0,0.0625,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.03,0.0,0.0,0.02,0.0,0.0,0.0,0.0,0.0,0.0,0.025,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.061,0.0,0.0,0.14,0.061,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.08,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.008,0.0,0.0,0.0,0.0,0.0,0.0,0.071,0.0,0.0,0.16,0.064,0.065,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.018,0.0,0.0,0.0,0.052,0.0,0.1,0.098,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.019,0.0,0.0,0.0,0.0,0.086,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.326,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.031,0.0812,0.04,0.0,0.087,0.06,0.062,0.0,0.0,0.0,0.0675,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.002,0.555,0.11,0.01,0.0,0.1,0.72,0.069,0.02,0.0,0.435,0.3,0.153,0.06,0.41,0.02,0.105,0.05,0.0,0.0,0.15,0.07,0.0,0.134,0.003,0.0,0.0,0.006,0.0,0.0,0.0,0.0,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.11,0.0,0.05,0.6,0.0,0.075,0.0,0.0,0.0,0.0,0.0,0.02,0.0,0.0,0.027,0.02,0.0,0.0,0.02,0.05,0.0,0.076,0.05,0.0,0.05,0.03,0.0,0.0,0.0,0.0,0.0,0.03,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.01,0.0,0.0,0.0,0.23,0.175,0.16,0.0,0.045,0.1,0.207,0.29,0.03,0.0,0.051,0.02,0.04,0.0,0.028,0.144,0.107,0.064,0.042,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.07,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.08,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.03,0.0,0.04,0.181,0.201,0.141,0.138,0.17,0.33,0.14,0.224,0.246,0.0,0.15,0.06,0.105,0.0,0.01,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.2,0.016,0.0,0.0,0.0,0.0,0.0,0.0,0.013,0.068,0.092,0.096,0.107,0.29,0.02,0.117,0.281,0.346,0.08,0.2,0.0,0.07625,0.0,0.05,0.005,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.13,0.0,0.0,0.02,0.18,0.02,0.031,0.095,0.027,0.05,0.0,0.0,0.0,0.01,0.0,0.07,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.01,0.112,0.185,0.0,0.0,0.0,0.0,0.0,0.1,0.2,0.0,0.0,0.0,0.0],[0.131,0.0,0.0,0.47,0.04,0.0,0.0,0.163,0.514,0.85,0.0,0.0,0.13,0.22,0.0,0.08,0.255,0.4,0.68,0.73,0.122,0.124,0.47,0.008,0.14,0.38,0.0,0.07,0.05,0.08,0.02,0.6,0.286,0.032,0.63,0.1,0.3,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.05,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.13,0.27,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.6,0.0,0.0,0.0,0.25,0.28,0.245,0.3,0.0,0.7,0.0,0.0],[0.0,0.0,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.1,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.1,0.0,0.0,0.066,0.059,0.088,0.0,0.0,0.0,0.12,0.5,0.35,0.43,0.0,0.3,0.0,0.0]],"catch":[[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,2.36e-05,0.0,0.08319,0.0,0.0,0.0,0.0],[0.0,7e-07,0.0,0.0003535,2.8e-06,0.0,2e-07,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,2.1e-06,0.0,0.0286059,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.011448,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.004272,0.0,0.0,0.0,0.0],[0.0,9.8e-06,0.0,9.5e-06,5.72e-05,0.0,0.0,3.109e-05],[0.0,6.7e-06,0.0,0.0006004,1.75e-05,0.0,2.78e-05,6.21e-05],[0.0,0.0004038,0.0626038,0.0001385,0.0,0.0,0.0,0.0],[2e-07,0.000575,0.0212273,3.12e-05,0.0008597,8.5e-06,8.17e-05,0.0006632],[0.0,9.1e-06,2.1e-06,0.0,1.3e-05,0.0,0.0001411,0.00135],[0.0,0.0003213,7.78e-05,3.7e-06,0.0016407,0.0,0.0414556,3.99e-05],[0.0,0.0002115,0.0,0.0,0.0010739,0.0,0.0404206,0.001559],[6e-07,0.0002761,0.0003411,0.0006134,0.0003775,0.0,2.08e-05,0.001667],[1.1e-06,7.89e-05,7.3e-06,0.0002434,0.0006836,0.0,0.0,0.000497],[0.0,2.1e-06,0.0,0.0,1.9e-06,0.0,7.21e-05,0.001039],[0.000236931,0.000536665,5.73622e-05,3.4576e-05,0.00314925,0.0,3.40092e-07,0.000524875],[2.1e-06,0.0001,5e-07,1.32e-05,0.0001003,0.0,8.8e-06,0.001196],[0.0,9e-07,0.0,2.5e-06,2.4e-06,0.0,1.41e-05,0.0001895],[0.0,3e-07,0.0,0.0,1.58e-05,0.0,0.0,0.0],[1.33e-05,0.0005824,0.0001218,9e-07,0.0016922,1.7e-06,1.17e-05,0.00625],[2.3e-06,2.34e-05,5e-06,4.94e-05,0.0002873,2e-06,2e-06,0.0067705],[0.0,6.92e-05,3.9e-06,1e-07,6.9e-05,1.32e-05,0.0,0.01375],[0.0,5.22e-05,0.0,0.0,1.58e-05,0.0,0.0,0.002891],[0.0,8e-06,1.77e-05,0.0,0.000115,2.58e-05,0.0,6.21e-05],[0.0,0.0,0.0,0.0,0.0,0.0,3e-07,0.004515],[4.8e-06,9.1e-06,4.7e-06,0.0,1.52e-05,3.6e-06,0.0002018,0.001208],[2e-07,0.0,5e-07,0.0,1.8e-06,0.0,0.0,0.0],[1.09e-05,0.0,0.0,0.0,0.0,3e-07,0.0,6.5e-05],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[1e-07,3.1e-06,0.0,0.0,0.0,0.0086876,0.0,0.003402],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]]};
+// Minimal Ecosim (foraging arena, Walters et al. 1997) for the Madeira nearshore model.
+function buildEcosim(m, opts) {
+  opts = opts || {};
+  const n = m.names.length, K = opts.vuln || 2, U = m.U;
+  const det = m.names.indexOf('Detritus');
+  const isProd = m.QB.map((q, i) => q === 0 && i !== det);
+  const B0 = m.B.slice(), PB = m.PB, QB = m.QB;
+  const links = [];               // {i prey, j pred, a, v}
+  for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+    const dc = m.diet[i][j]; if (!dc) continue;
+    const Q0 = dc * QB[j] * B0[j];
+    const v = K * Q0 / B0[i];
+    const a = 2 * K * Q0 / (B0[i] * B0[j] * (K - 1));
+    links.push({ i, j, a, v });
+  }
+  const M0 = PB.map((p, i) => i === det ? 0 : p * (1 - m.EE[i]));
+  const GE = QB.map((q, i) => q > 0 ? PB[i] / q : 0);
+  const F0 = new Array(n).fill(0), Ff = m.fleets.map(() => new Array(n).fill(0));
+  m.catch.forEach((row, i) => row.forEach((c, f) => { Ff[f][i] = c / B0[i]; }));
+  // detritus baseline: inflow - consumption -> export rate
+  let dIn = 0, dCons = 0;
+  for (let i = 0; i < n; i++) { if (i === det) continue; dIn += M0[i] * B0[i] + U * QB[i] * B0[i]; }
+  links.forEach(L => { if (L.i === det) dCons += m.diet[det][L.j] * QB[L.j] * B0[L.j]; });
+  const dExp = (dIn - dCons) / B0[det];
+
+  function run(effort, years, ppMult, stepsPerYear) {
+    stepsPerYear = stepsPerYear || 24; ppMult = ppMult == null ? 1 : ppMult;
+    const dt = 1 / stepsPerYear, B = B0.slice();
+    const F = new Array(n).fill(0);
+    for (let f = 0; f < Ff.length; f++) for (let i = 0; i < n; i++) F[i] += Ff[f][i] * effort[f];
+    const out = [B.slice()], catches = [];
+    const cons = new Float64Array(n), pred = new Float64Array(n);
+    let yearCatch = new Float64Array(Ff.length);
+    for (let s = 1; s <= years * stepsPerYear; s++) {
+      cons.fill(0); pred.fill(0);
+      for (const L of links) {
+        const q = L.a * L.v * B[L.i] * B[L.j] / (2 * L.v + L.a * B[L.j]);
+        cons[L.j] += q; pred[L.i] += q;
+      }
+      const Bn = B.slice();
+      for (let i = 0; i < n; i++) {
+        let f, z;
+        if (i === det) {
+          let inflow = 0;
+          for (let k = 0; k < n; k++) if (k !== det) inflow += M0[k] * B[k] + U * (cons[k] + m.imp[k] * QB[k] * B[k]);
+          f = inflow; z = pred[i] / B[i] + dExp;
+        } else if (isProd[i]) {
+          const r = PB[i] * ppMult;
+          f = r * B[i] * 2 / (1 + B[i] / B0[i]);
+          z = pred[i] / B[i] + M0[i] + F[i];
+        } else {
+          f = GE[i] * (cons[i] + m.imp[i] * QB[i] * B[i]);
+          z = pred[i] / B[i] + M0[i] + F[i];
+        }
+        const eq = f / z;
+        Bn[i] = Math.max(1e-9, eq + (B[i] - eq) * Math.exp(-z * dt));
+      }
+      for (let f2 = 0; f2 < Ff.length; f2++) for (let i = 0; i < n; i++) yearCatch[f2] += Ff[f2][i] * effort[f2] * B[i] * dt;
+      for (let i = 0; i < n; i++) B[i] = Bn[i];
+      if (s % stepsPerYear === 0) { out.push(B.slice()); catches.push(Array.from(yearCatch)); yearCatch = new Float64Array(Ff.length); }
+    }
+    return { B: out, catch: catches };
+  }
+  return { run, B0, n };
+}
+
+
+
+const YEARS = 20, AREA_KM2 = 11212;
+const T = {
+  pt: {
+    eyebrow: "Museu da Baleia · Laboratório do oceano", title: "Mar da Madeira: e se…?",
+    lede: "Mude a pesca e a produtividade do oceano e veja como a rede alimentar responde nos próximos 20 anos.",
+    reset: "Recomeçar", ctrlTitle: "As suas decisões", ctrlHint: "Arraste para menos ou mais pesca. 1× é o nível atual.",
+    webTitle: "Rede alimentar", whatTitle: "O que aconteceu?", catchK: "Pesca total por ano", indTitle: "Espécies a acompanhar",
+    proto: "PROTÓTIPO", foot: "Modelo Ecopath/Ecosim da costa da Madeira (42 grupos, 11 212 km², referência 2008). Resultados ilustrativos.",
+    foot2: "Toque num círculo para ver a sua história.",
+    year0: "Hoje", yearN: "Daqui a", years: "anos", tl: "Nível trófico",
+    noChange: "Com a pesca de hoje, o ecossistema mantém-se estável. Experimente mudar um controlo.",
+    rose: "subiram mais", fell: "desceram mais", inYears: "Em 20 anos,", and: "e",
+    legUp: "aumentou", legDown: "diminuiu", legSame: "igual", vsToday: "vs. hoje", tonnes: "t",
+    legSize: "tamanho = biomassa",
+    presets: { today: "Hoje", none: "Sem pesca", double: "Pesca a dobrar", poor: "Oceano mais pobre" },
+    ctrls: {
+      LLD: ["Pesca do peixe-espada", "palangre de profundidade"], LHP: ["Pesca do atum", "salto e vara"],
+      PS: ["Pesca de cerco", "chicharro e cavala"], ART: ["Pesca artesanal", "linha, palangre de fundo, covos"],
+      REC: ["Pesca recreativa", "lúdica e desportiva"], PP: ["Produtividade do oceano", "plâncton e algas (clima)"]
+    },
+    times: "×"
+  },
+  en: {
+    eyebrow: "Whale Museum · Ocean lab", title: "Madeira's sea: what if…?",
+    lede: "Change fishing and ocean productivity and watch the food web respond over the next 20 years.",
+    reset: "Start again", ctrlTitle: "Your decisions", ctrlHint: "Drag for less or more fishing. 1× is today's level.",
+    webTitle: "Food web", whatTitle: "What happened?", catchK: "Total catch per year", indTitle: "Species to watch",
+    proto: "PROTOTYPE", foot: "Ecopath/Ecosim model of Madeira's nearshore waters (42 groups, 11,212 km², reference year 2008). Illustrative results.",
+    foot2: "Tap a circle to see its story.",
+    year0: "Today", yearN: "In", years: "years", tl: "Trophic level",
+    noChange: "With today's fishing, the ecosystem stays stable. Try changing a control.",
+    rose: "rose the most", fell: "fell the most", inYears: "In 20 years,", and: "and",
+    legUp: "increased", legDown: "decreased", legSame: "unchanged", vsToday: "vs. today", tonnes: "t",
+    legSize: "size = biomass",
+    presets: { today: "Today", none: "No fishing", double: "Double fishing", poor: "Poorer ocean" },
+    ctrls: {
+      LLD: ["Black scabbardfish fishery", "deep longline"], LHP: ["Tuna fishery", "pole and line"],
+      PS: ["Purse seine", "jack mackerel and chub mackerel"], ART: ["Small-scale fishing", "handline, bottom longline, traps"],
+      REC: ["Recreational fishing", "leisure and sport"], PP: ["Ocean productivity", "plankton and algae (climate)"]
+    },
+    times: "×"
+  }
+};
+
+// Visitor-level groups (aggregating the 42 model groups)
+const G = [
+  { id: "lobo", m: ["Monk seals"], x: 960, pt: ["Lobo-marinho", "Uma das focas mais ameaçadas do mundo. No modelo, come sobretudo polvos e chocos costeiros."], en: ["Monk seal", "One of the world's most endangered seals. In the model it eats mostly coastal octopus and cuttlefish."] },
+  { id: "tub", m: ["Deep Bathydem Sharks", "Shallow Bathydem Sharks", "Pelagic Top Pred"], x: 360, pt: ["Tubarões", "Crescem devagar e têm poucas crias. São apanhados como captura acessória na pesca do espada."], en: ["Sharks", "They grow slowly and have few young. They are caught as bycatch in the scabbardfish fishery."] },
+  { id: "esp", m: ["Aphanopus carbo"], x: 215, pt: ["Peixe-espada-preto", "Vive a mais de 800 m de profundidade. É a pesca mais emblemática da Madeira."], en: ["Black scabbardfish", "Lives below 800 m. Madeira's most iconic fishery."] },
+  { id: "cet", m: ["Baleen whales", "Deep diving whales", "Dolphins"], x: 500, pt: ["Baleias e golfinhos", "Cachalotes, baleias e golfinhos dependem de lulas e de pequenos peixes."], en: ["Whales & dolphins", "Sperm whales, baleen whales and dolphins depend on squid and small fish."] },
+  { id: "atum", m: ["Thunnus obesus", "Pelagic L"], x: 660, pt: ["Atuns", "O atum-patudo e outros grandes peixes do largo. Migram por todo o Atlântico."], en: ["Tunas", "Bigeye tuna and other large open-ocean fish. They migrate across the Atlantic."] },
+  { id: "ave", m: ["Seabirds", "Sea turtles"], x: 880, pt: ["Aves e tartarugas", "Cagarras, e tartarugas que atravessam as águas da Madeira."], en: ["Seabirds & turtles", "Shearwaters, and turtles crossing Madeira's waters."] },
+  { id: "lula", m: ["Oceanic Cephs", "Coastal Cephs"], x: 300, pt: ["Lulas e polvos", "Uma peça-chave: comem pequenos peixes e alimentam baleias, focas e atuns."], en: ["Squid & octopus", "A keystone: they eat small fish and feed whales, seals and tunas."] },
+  { id: "fun", m: ["BP Piscivores", "BP MesoCvores", "BP MicroCvores", "Dem Predators", "Dem MesoCvores", "Dem MicroCvores"], x: 760, pt: ["Peixes de fundo", "Pargos, chernes, abróteas e outros peixes que vivem junto ao fundo."], en: ["Bottom fish", "Red porgy, wreckfish, forkbeard and other fish living near the seabed."] },
+  { id: "rec", m: ["Reef Morays", "SF Piscivores", "SF MesoCvores", "SF MicroCvores", "SF Omnivorous", "SF Planktivorous"], x: 1000, pt: ["Peixes de recife", "Moreias, garoupas, castanhetas e outros peixes da costa rochosa."], en: ["Reef fish", "Morays, groupers, damselfish and other rocky-shore fish."] },
+  { id: "chi", m: ["Trachurus picturatus"], x: 610, pt: ["Chicharro", "Pequeno peixe em cardume, alvo da pesca de cerco e alimento de muitos predadores."], en: ["Blue jack mackerel", "A small schooling fish, target of the purse seine and food for many predators."] },
+  { id: "cav", m: ["Pelagic Planktivores", "Pelagic M"], x: 470, pt: ["Cavala e sardinha", "Pequenos peixes que comem plâncton e passam a energia para cima na cadeia."], en: ["Mackerel & sardine", "Small plankton-eating fish that pass energy up the chain."] },
+  { id: "pro", m: ["Bathypelagic Fish", "Mesopelagic M", "Mesopelagic S", "Deep Bathydem Fish", "Shallow Bathydem Fish"], x: 130, pt: ["Peixes de profundidade", "Peixes-lanterna e outros que sobem à noite para comer plâncton."], en: ["Deep-sea fish", "Lanternfish and others that rise at night to feed on plankton."] },
+  { id: "cru", m: ["Oceanic Decapods", "Coastal Decapods", "Other bentos"], x: 720, pt: ["Camarões e invertebrados", "Camarões, caranguejos, vermes e outros pequenos animais do fundo."], en: ["Shrimps & invertebrates", "Shrimps, crabs, worms and other small seabed animals."] },
+  { id: "lap", m: ["Benthic grazers"], x: 930, pt: ["Lapas e ouriços", "Raspam as algas das rochas. As lapas são apanhadas à mão na costa."], en: ["Limpets & urchins", "They graze algae off the rocks. Limpets are hand-picked on the shore."] },
+  { id: "zoo", m: ["Zooplankton"], x: 380, pt: ["Zooplâncton", "Minúsculos animais à deriva. O grupo mais importante da rede alimentar."], en: ["Zooplankton", "Tiny drifting animals. The most important group in the food web."] },
+  { id: "fit", m: ["Phytoplankton", "MacroAlgae"], x: 610, pt: ["Fitoplâncton e algas", "A base de tudo: transformam a luz do sol em alimento."], en: ["Phytoplankton & algae", "The base of everything: they turn sunlight into food."] }
+];
+const WATCH = ["cet", "lobo", "tub", "esp", "atum", "chi", "rec"];
+
+const N = MODEL.names, idx = Object.fromEntries(N.map((n, i) => [n, i]));
+G.forEach(g => {
+  g.ix = g.m.map(n => idx[n]);
+  g.B0 = g.ix.reduce((s, i) => s + MODEL.B[i], 0);
+  g.TL = g.ix.reduce((s, i) => s + MODEL.B[i] * MODEL.TL[i], 0) / g.B0;
+});
+const gOf = {}; G.forEach((g, k) => g.ix.forEach(i => { gOf[i] = k; }));
+// aggregated baseline flows between visitor groups
+const flows = {};
+for (let i = 0; i < N.length; i++) for (let j = 0; j < N.length; j++) {
+  const dc = MODEL.diet[i][j]; if (!dc || gOf[i] == null || gOf[j] == null || gOf[i] === gOf[j]) continue;
+  const k = gOf[i] + ">" + gOf[j]; flows[k] = (flows[k] || 0) + dc * MODEL.QB[j] * MODEL.B[j];
+}
+const LINKS = Object.entries(flows).map(([k, f]) => { const [a, b] = k.split(">").map(Number); return { a, b, f }; })
+  .filter(l => l.f > 0.004).sort((x, y) => x.f - y.f);
+const fMax = Math.max(...LINKS.map(l => l.f)), fMin = Math.min(...LINKS.map(l => l.f));
+
+// Controls
+const FLEETS = MODEL.fleets;
+const CTRLS = [
+  { id: "LLD", fl: ["LLD"], max: 3 }, { id: "LHP", fl: ["LHP"], max: 3 }, { id: "PS", fl: ["PS"], max: 3 },
+  { id: "ART", fl: ["HAND", "LLS", "FPO"], max: 3 }, { id: "REC", fl: ["REC"], max: 3 },
+  { id: "PP", pp: true, min: 0.6, max: 1.4 }
+];
+const PRESETS = {
+  today: { LLD: 1, LHP: 1, PS: 1, ART: 1, REC: 1, PP: 1 },
+  none: { LLD: 0, LHP: 0, PS: 0, ART: 0, REC: 0, PP: 1 },
+  double: { LLD: 2, LHP: 2, PS: 2, ART: 2, REC: 2, PP: 1 },
+  poor: { LLD: 1, LHP: 1, PS: 1, ART: 1, REC: 1, PP: 0.8 }
+};
+let state = Object.assign({}, PRESETS.today), lang = "pt", selected = "lobo", preset = "today";
+
+const sim = buildEcosim(MODEL);
+let result = null, frame = YEARS, anim = null;
+const baseCatch = MODEL.catch.reduce((s, r) => s + r.reduce((a, b) => a + b, 0), 0);
+
+function effortVec() {
+  const e = FLEETS.map(() => 1);
+  CTRLS.forEach(c => { if (c.fl) c.fl.forEach(f => { e[FLEETS.indexOf(f)] = state[c.id]; }); });
+  return e;
+}
+function gRatio(Bvec, g) { return g.ix.reduce((s, i) => s + Bvec[i], 0) / g.B0; }
+function ratioAt(t, g) {
+  const a = Math.floor(t), b = Math.min(YEARS, a + 1), w = t - a;
+  return gRatio(result.B[a], g) * (1 - w) + gRatio(result.B[b], g) * w;
+}
+function fmtPct(r) { const p = Math.round((r - 1) * 100); return (p > 0 ? "+" : p < 0 ? "−" : "") + Math.abs(p) + "%"; }
+function col(r) {
+  const p = r - 1; if (Math.abs(p) < 0.03) return "var(--muted)";
+  return p > 0 ? "var(--up)" : "var(--down)";
+}
+const fmtNum = v => Math.round(v).toLocaleString(lang === "pt" ? "pt-PT" : "en-GB");
+
+// ---------- build DOM ----------
+const $ = id => document.getElementById(id);
+function buildControls() {
+  const box = $("controls"); box.innerHTML = "";
+  CTRLS.forEach(c => {
+    const min = c.min ?? 0, d = document.createElement("div"); d.className = "ctrl";
+    d.innerHTML = `<div class="ctrl-top"><label for="s-${c.id}"></label><span class="val" id="v-${c.id}"></span></div>
+      <div class="sub" id="sub-${c.id}"></div>
+      <input type="range" id="s-${c.id}" min="${min}" max="${c.max}" step="${c.pp ? 0.05 : 0.1}" value="${state[c.id]}">
+      <div class="scale"><span>${c.pp ? "−40%" : "0×"}</span><span>${c.pp ? "1× hoje" : "1×"}</span><span>${c.pp ? "+40%" : c.max + "×"}</span></div>`;
+    box.appendChild(d);
+    d.querySelector("input").addEventListener("input", e => { state[c.id] = +e.target.value; preset = null; touch(); update(true); });
+  });
+  const pr = $("presets"); pr.innerHTML = "";
+  Object.keys(PRESETS).forEach(k => {
+    const b = document.createElement("button"); b.className = "chip"; b.dataset.p = k; b.id = "p-" + k;
+    b.addEventListener("click", () => { state = Object.assign({}, PRESETS[k]); preset = k; syncSliders(); touch(); update(false); });
+    pr.appendChild(b);
+  });
+}
+function syncSliders() {
+  CTRLS.forEach(c => {
+    const s = $("s-" + c.id), min = c.min ?? 0; s.value = state[c.id];
+    s.style.setProperty("--p", ((state[c.id] - min) / (c.max - min) * 100) + "%");
+    $("v-" + c.id).textContent = c.pp ? fmtPct(state[c.id]) : (state[c.id].toFixed(1).replace(".", lang === "pt" ? "," : ".") + "×");
+  });
+  document.querySelectorAll("#presets .chip").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.p === preset)));
+}
+
+const NS = "http://www.w3.org/2000/svg";
+const yTL = tl => 545 - (tl - 1) * 120;
+const rBase = g => 13 + 30 * Math.sqrt(g.B0 / Math.max(...G.map(h => h.B0)));
+function buildWeb() {
+  const svg = $("food"); svg.innerHTML = "";
+  for (let tl = 1; tl <= 5; tl++) {
+    const y = yTL(tl);
+    svg.insertAdjacentHTML("beforeend", `<line class="tl-line" x1="40" x2="1060" y1="${y}" y2="${y}"/><text class="tl-label" x="6" y="${y + 4}">${tl}</text>`);
+  }
+  svg.insertAdjacentHTML("beforeend", `<text class="tl-label" id="tlLab" x="6" y="18"></text>`);
+  const lg = document.createElementNS(NS, "g"); lg.id = "links"; svg.appendChild(lg);
+  LINKS.forEach((l, k) => {
+    const p = document.createElementNS(NS, "path"); p.setAttribute("class", "link"); p.id = "l" + k;
+    const A = G[l.a], Bn = G[l.b], x1 = A.x, y1 = yTL(A.TL), x2 = Bn.x, y2 = yTL(Bn.TL);
+    const cx = (x1 + x2) / 2 + (y2 - y1) * 0.18, cy = (y1 + y2) / 2 - Math.abs(x2 - x1) * 0.12;
+    p.setAttribute("d", `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`);
+    lg.appendChild(p);
+  });
+  G.forEach(g => {
+    const n = document.createElementNS(NS, "g"); n.setAttribute("class", "node"); n.id = "n-" + g.id;
+    n.setAttribute("tabindex", "0"); n.setAttribute("role", "button");
+    const x = g.x, y = yTL(g.TL);
+    n.innerHTML = `<circle class="halo" cx="${x}" cy="${y}" r="0"></circle><circle class="body" cx="${x}" cy="${y}" r="${rBase(g)}"></circle>
+      <text class="nm" x="${x}" y="${y}"></text><text class="pct" x="${x}" y="${y}"></text>`;
+    const sel = () => { selected = g.id; touch(); render(frame); };
+    n.addEventListener("click", sel);
+    n.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); sel(); } });
+    svg.appendChild(n);
+  });
+}
+function buildInd() {
+  const ul = $("ind"); ul.innerHTML = "";
+  WATCH.forEach(id => {
+    const li = document.createElement("li");
+    li.innerHTML = `<button id="i-${id}"><span class="nm"></span><span class="track"><span class="fill"></span></span><span class="pc"></span></button>`;
+    li.querySelector("button").addEventListener("click", () => { selected = id; touch(); render(frame); });
+    ul.appendChild(li);
+  });
+}
+
+// ---------- render ----------
+function render(t) {
+  const L = T[lang];
+  $("year").innerHTML = t < 0.05 ? `${L.year0}<small>${L.vsToday}</small>` : `+${Math.round(t)} ${L.years}<small>${L.yearN} ${Math.round(t)} ${L.years}</small>`;
+  $("bar").style.width = (t / YEARS * 100) + "%";
+  const R = G.map(g => ratioAt(t, g));
+  LINKS.forEach((l, k) => {
+    const p = $("l" + k); const fr = l.f * Math.sqrt(R[l.a] * R[l.b]);
+    const s = Math.log(fr / fMin + 1) / Math.log(fMax / fMin + 1);
+    p.setAttribute("stroke-width", (0.6 + 7 * s).toFixed(2));
+    p.setAttribute("stroke-opacity", (0.10 + 0.45 * s).toFixed(2));
+  });
+  G.forEach((g, k) => {
+    const n = $("n-" + g.id), r = R[k], rad = rBase(g) * Math.sqrt(Math.min(2.6, Math.max(0.15, r)));
+    const c = n.querySelector("circle.body"), y = yTL(g.TL);
+    c.setAttribute("r", rad.toFixed(1)); c.setAttribute("fill", col(r)); c.setAttribute("fill-opacity", ".28"); c.setAttribute("stroke", col(r));
+    n.querySelector("circle.halo").setAttribute("r", selected === g.id ? (rad + 7).toFixed(1) : 0);
+    n.classList.toggle("sel", selected === g.id);
+    const nm = n.querySelector("text.nm"); nm.textContent = g[lang][0]; nm.setAttribute("y", (y + rad + 16).toFixed(1));
+    const pc = n.querySelector("text.pct"); pc.textContent = Math.abs(r - 1) >= 0.01 ? fmtPct(r) : ""; pc.setAttribute("y", (y + rad + 31).toFixed(1)); pc.style.fill = col(r);
+    n.setAttribute("aria-label", g[lang][0] + " " + fmtPct(r));
+  });
+  $("tlLab").textContent = L.tl;
+  // indicators
+  WATCH.forEach(id => {
+    const k = G.findIndex(g => g.id === id), r = R[k], b = $("i-" + id);
+    b.querySelector(".nm").textContent = G[k][lang][0];
+    const p = Math.max(-1, Math.min(1, (r - 1))); const f = b.querySelector(".fill");
+    f.style.left = p >= 0 ? "50%" : (50 + p * 50) + "%"; f.style.width = Math.abs(p) * 50 + "%"; f.style.background = col(r);
+    const pc = b.querySelector(".pc"); pc.textContent = fmtPct(r); pc.style.color = col(r);
+    b.setAttribute("aria-current", String(selected === id));
+  });
+  // catch tile
+  const yi = Math.min(YEARS - 1, Math.max(0, Math.round(t) - 1));
+  const cNow = t < 0.05 ? currentCatch0() : result.catch[yi].reduce((a, b) => a + b, 0);
+  $("catchV").textContent = fmtNum(cNow * AREA_KM2) + " " + L.tonnes;
+  const cr = cNow / baseCatch; $("catchD").textContent = fmtPct(cr) + " " + L.vsToday; $("catchD").style.color = col(cr);
+  renderDetail(t);
+}
+function currentCatch0() { // catch in the first instant with the new effort, before stocks respond
+  const e = effortVec(); return MODEL.catch.reduce((s, row) => s + row.reduce((a, c, f) => a + c * e[f], 0), 0);
+}
+function renderDetail(t) {
+  const L = T[lang], g = G.find(h => h.id === selected), k = G.indexOf(g);
+  $("detName").textContent = g[lang][0]; $("detText").textContent = g[lang][1];
+  const svg = $("spark"), W = 320, H = 120, pl = 34, pr = 8, pt = 8, pb = 20;
+  const vals = result.B.map(b => gRatio(b, g));
+  const lo = Math.min(0.8, ...vals) , hi = Math.max(1.2, ...vals);
+  const X = i => pl + i / YEARS * (W - pl - pr), Y = v => pt + (1 - (v - lo) / (hi - lo)) * (H - pt - pb);
+  const upto = Math.max(1, Math.round(t));
+  const pts = vals.slice(0, upto + 1).map((v, i) => `${X(i).toFixed(1)},${Y(v).toFixed(1)}`).join(" ");
+  const last = vals[Math.min(upto, YEARS)], c = col(last);
+  const ticks = [lo, 1, hi].map(v => `<text class="ax" x="${pl - 6}" y="${Y(v) + 4}" text-anchor="end">${Math.round(v * 100)}%</text>`).join("");
+  svg.innerHTML = `<line x1="${pl}" x2="${W - pr}" y1="${Y(1)}" y2="${Y(1)}" stroke="var(--muted)" stroke-dasharray="3 4" stroke-opacity=".7"/>
+    ${ticks}<text class="ax" x="${pl}" y="${H - 4}">${L.year0}</text><text class="ax" x="${W - pr}" y="${H - 4}" text-anchor="end">+${YEARS} ${L.years}</text>
+    <polygon points="${X(0)},${Y(lo)} ${pts} ${X(upto)},${Y(lo)}" fill="${c}" fill-opacity=".12"/>
+    <polyline points="${pts}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round"/>
+    <circle cx="${X(upto)}" cy="${Y(last)}" r="5" fill="${c}"/>`;
+  svg.setAttribute("aria-label", g[lang][0] + ": " + fmtPct(last));
+}
+function story() {
+  const L = T[lang], R = G.map(g => gRatio(result.B[YEARS], g));
+  const order = G.map((g, k) => [k, R[k]]).sort((a, b) => b[1] - a[1]);
+  const ups = order.filter(o => o[1] > 1.05).slice(0, 2), downs = order.filter(o => o[1] < 0.95).reverse().slice(0, 2);
+  if (!ups.length && !downs.length) { $("story").textContent = L.noChange; return; }
+  const nm = o => `<b class="${o[1] > 1 ? "up" : "down"}">${G[o[0]][lang][0]} ${fmtPct(o[1])}</b>`;
+  let s = L.inYears + " ";
+  if (ups.length) s += ups.map(nm).join(` ${L.and} `) + " " + L.rose + (downs.length ? "; " : ".");
+  if (downs.length) s += downs.map(nm).join(` ${L.and} `) + " " + L.fell + ".";
+  $("story").innerHTML = s;
+}
+function update(fast) {
+  syncSliders();
+  const pp = state.PP;
+  result = sim.run(effortVec(), YEARS, pp, 12);
+  story();
+  if (anim) cancelAnimationFrame(anim);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { frame = YEARS; render(frame); return; }
+  const dur = fast ? 2200 : 4500, t0 = performance.now();
+  const step = now => {
+    const u = Math.max(0, Math.min(1, (now - t0) / dur)); frame = YEARS * (1 - Math.pow(1 - u, 2));
+    render(frame); if (u < 1) anim = requestAnimationFrame(step);
+  };
+  anim = requestAnimationFrame(step);
+}
+function applyLang() {
+  const L = T[lang];
+  document.querySelectorAll("[data-t]").forEach(el => { el.textContent = L[el.dataset.t]; });
+  CTRLS.forEach(c => { document.querySelector(`label[for="s-${c.id}"]`).textContent = L.ctrls[c.id][0]; $("sub-" + c.id).textContent = L.ctrls[c.id][1]; });
+  document.querySelectorAll("#presets .chip").forEach(b => { b.textContent = L.presets[b.dataset.p]; });
+  document.querySelectorAll(".scale span:nth-child(2)").forEach((s, k) => { if (CTRLS[k].pp) s.textContent = lang === "pt" ? "1× hoje" : "1× today"; });
+  $("legend").innerHTML = `<span style="--c:var(--up)">${L.legUp}</span><span style="--c:var(--down)">${L.legDown}</span><span style="--c:var(--muted)">${L.legSame}</span><span>${L.legSize}</span>`;
+  $("lang-pt").setAttribute("aria-pressed", String(lang === "pt")); $("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+  document.documentElement.lang = lang;
+  syncSliders(); story(); render(frame);
+}
+// idle reset for the kiosk
+let idleT = null;
+function touch() { clearTimeout(idleT); idleT = setTimeout(() => { state = Object.assign({}, PRESETS.today); preset = "today"; lang = "pt"; selected = "lobo"; applyLang(); update(false); }, 120000); }
+
+buildControls(); buildWeb(); buildInd();
+$("lang-pt").addEventListener("click", () => { lang = "pt"; touch(); applyLang(); });
+$("lang-en").addEventListener("click", () => { lang = "en"; touch(); applyLang(); });
+$("reset").addEventListener("click", () => { state = Object.assign({}, PRESETS.today); preset = "today"; syncSliders(); touch(); update(false); });
+// open in a working state: the "no fishing" scenario, already played to year 20
+state = Object.assign({}, PRESETS.none); preset = "none";
+result = sim.run(effortVec(), YEARS, state.PP, 12); frame = YEARS;
+applyLang(); touch();
+</script>
+
+</body>
+</html>
